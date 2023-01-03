@@ -1,0 +1,30 @@
+.signin_div{
+    color:blueviolet
+}
+.login_div{
+    color:blueviolet;
+}
+.myprofile{
+    width:80px;
+    height:80px;
+}
+.user_profile{
+    width:400px;
+    height:400px;
+}
+.user_name{
+    font-family: 'Times New Roman', Times, serif;
+}
+.mydiv{
+    overflow:auto;
+}
+.comment_profile{
+    width:70px;
+    height:70px;
+}
+
+.my_chat_profile{
+    width:20px;
+    height:20px;
+    border-radius:10px;
+}

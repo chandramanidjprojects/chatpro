@@ -1,0 +1,86 @@
+{% extends 'testapp/base.html' %}
+{% block body_block %}
+<h6>you are chating with {{chat_with.username}} id:{{chat_with.id}}</h6>
+{{chat_with.id | json_script:"room_name"}}
+
+<div id="chat_place">
+ {% for chats in tot_chats %}
+  {% ifequal chats.chat_by request.user %}
+  
+  <h6 style="margin-left:50%;color:blue">{{chats.chat_text}} <sup><img src="{{chats.chat_by.profileimage.image.url}}" 
+    style="width:20px;height:20px;border-radius:10px;" class=""/>{{chats.chat_by}}</sup></h6>
+  {% else %}
+  <h6>{{chats.chat_text}} <sup><img src="{{chats.chat_by.profileimage.image.url}}" 
+    style="width:20px;height:20px;border-radius:10px;" class=""/>
+    {{chats.chat_by}}</sup></h6>
+  {% endifequal %}
+  {% endfor %}    
+</div>
+<div class="fixed-bottom mb-3 text-center">
+  <form>
+       {% csrf_token %}
+       <input type="text" id="send_text" placeholder="write your chats here..."/><br>
+       <input type="button" value="send" id="send_button"/>
+       
+  </form>    
+</div>
+
+<script>
+
+const room_name=JSON.parse(document.getElementById('room_name').textContent)
+const websocket=new WebSocket('ws://'+window.location.host+'/ws/chat/'+room_name+'/')
+
+document.getElementById('send_button').onclick=()=>{
+  let value=document.getElementById('send_text').value
+  websocket.send(JSON.stringify({"message":value}))
+}
+
+websocket.onmessage=(e)=>{
+  console.log(e)
+  data=JSON.parse(e.data)
+  if('{{request.user}}'==data.user){
+    document.getElementById('chat_place').innerHTML+=`<h6 style="margin-left:50%;color:blue;">${data.message}
+      <sup> <img src="${data.image}" alt='not found' style="width:20px;height:20px;border-radius:10px;"/> ${data.user} </sup>
+      </h6>`
+  }
+  else{
+    document.getElementById('chat_place').innerHTML+=`<h6>${data.message}
+      <sup> <img src="${data.image}" alt='not found' style="width:20px;height:20px;border-radius:10px;"/> ${data.user} </sup>
+      </h6>`
+  }
+
+}
+
+
+
+
+
+
+//  let elements= document.querySelectorAll('.room')
+// elements.forEach((elm)=>{
+//   elm.onclick=()=>{
+//     room_name=elm.textContent
+    
+//     let websocket=new WebSocket('ws://'+window.location.host+'/ws/chat/'+room_name+'/')
+//     websocket.onmessage=(e)=>{
+//         data=JSON.parse(e.data).message
+//         console.log(data)
+//         document.getElementById('chat_place').innerHTML+=`<h6 style="color:blue;margin-left:50%">${data}</h6>`
+//     }
+//     document.getElementById('send_button').onclick=()=>{
+//         let msg=document.getElementById('send_text').value
+        
+//         websocket.send(JSON.stringify({'message':msg}))
+//    }
+//   }
+// })
+
+
+
+
+
+
+</script>
+{% endblock %}
+
+

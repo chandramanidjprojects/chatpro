@@ -1,0 +1,44 @@
+<script>
+    window.onload=()=>{
+        this.scrollBy({top:this.innerHeight,behavior:"smooth"})
+        $("input[name='comment_text']").focus()
+    }
+    $(()=>{
+        let btn=$('.comment_btn')
+        $("input[name='comment_text']").on('keypress',(e)=>{
+            
+            if(e.keyCode==13){
+                e.preventDefault()
+                btn.click()
+                window.scrollBy({top:window.innerHeight,behavior:"smooth"})
+            }
+
+        })
+        btn.on('click',()=>{
+          window.scrollBy({top:window.innerHeight,behavior:"smooth"})  
+          let text=$("input[name='comment_text']").val()
+          let csr=$("input[name='csrfmiddlewaretoken']").val()
+          let my_data={text:text,csrfmiddlewaretoken:csr}
+          let my_this=$(this)
+          $.ajax({
+            method:'POST',
+            data:my_data,
+            url:"{% url 'comments' %}",
+            success:(data)=>{
+                
+                let datas=`<img src=${data.image} class="comment_profile rounded-circle p-3"/>
+                           <span>${data.text} <sup style="color:red;">${data.user}</sup> </span> 
+                          <br> 
+                           `                                 
+                $('.comments_place').append(datas)
+                
+                                
+
+                document.comment_form.reset()  
+            }
+            
+          })
+
+        })
+    })
+</script>

@@ -1,0 +1,52 @@
+{% extends 'testapp/base.html' %}
+{% block body_block %}
+<div class="container" id="comments_place">
+   {{user.id | json_script:"user_id"}}
+   <h3 style="font-family: Georgia, 'Times New Roman', Times, serif;">you are comment with {{user.username}}</h3>
+   {% for comment in tot_comments %}
+   <img src="{{comment.comment_by.profileimage.image.url}}" class="comment_profile rounded-circle p-3"/> 
+   <span>{{comment.comment}}  <sup style="margin-left:5px;color:red;">{{comment.comment_by}}</sup></span><br>
+   {% endfor %}
+   
+</div><br><br><br>
+<br><br><br><br><br><br><br>
+
+<div class="fixed-bottom text-center "><br>
+      
+   <form>
+        {% csrf_token %}
+        <input type="text" id="send_text" placeholder="write your comments here..."/><br>
+        <input type="button" value="send" id="send_button"/>
+        
+   </form>    
+
+<!-- <form method="POST" name='comment_form'>
+ <div class="form-group">
+     {% csrf_token %}
+    <input type="text"  class="form-control" name="comment_text" placeholder="write your comments here..."/><br>
+    <input type="button"   class="border-2 border-bg-success comment_btn" value="Send"  />
+ </div>
+
+</form><br><br> -->
+</div>
+<script>
+   
+   user_id=JSON.parse(document.getElementById('user_id').textContent)
+   const websocket=new WebSocket('ws://'+window.location.host+'/ws/comments/'+user_id+'/')
+   document.getElementById('send_button').onclick=()=>{
+       let value=document.getElementById('send_text').value
+       websocket.send(JSON.stringify({'message':value}))
+   }
+   
+   websocket.onmessage=(e)=>{
+      data=JSON.parse(e.data)   
+      document.getElementById('comments_place').innerHTML+=`<img src="${data.image}" alt="no image"
+       class="comment_profile rounded-circle p-3"/> 
+      <span>${data.message}  <sup style="margin-left:5px;color:red;">${data.user}</sup></span><br>
+      `
+         
+   }
+</script>
+
+<!-- {% include 'testapp/comments_ajax.html' %} -->
+{% endblock %}

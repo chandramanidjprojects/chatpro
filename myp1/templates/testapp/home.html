@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+    <head>
+     <link rel='stylesheet' href="{% static 'css/bootstrap.min.css' %}"/>
+    </head>
+    <body>
+        <h1 class='bg-success'>hello from django</h1>
+         <table class="ml-5" border="3">
+             <thead>
+                 <th>id</th>
+                 <th>name</th>
+                 <th>subject</th>
+                 <th>Edit</th>
+                 <th>Delete</th>
+             </thead>
+            <tbody>
+                {% for s in students %}
+                  <tr>
+                      <td>{{s.id}}</td>
+                      <td>{{s.name}}</td>
+                      <td>{{s.subject}}</td>
+                      <td><a href="edit/{{s.id}}">Edit</a></td>
+                      <td><a href="delete/{{s.id}}">Delete</a></td>
+                  </tr>
+                {% endfor%}
+            </tbody> 
+         </table>
+        <br><br><br>
+         <form method="POST" class="ml-5">
+            {% csrf_token %}
+            {{form.as_p}}  <br />
+            <input type='submit' value='create student'/>
+         </form>
+<script src="{% static 'js/jquery.js' %}"></script>
+        
+    </body>
+</html>

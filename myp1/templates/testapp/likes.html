@@ -1,0 +1,20 @@
+<script>
+  $(function(){
+    //likes
+    $('.likes').on('click',function(){
+      let like_id=$(this).attr('data-sid')
+      let my_data={like_id:like_id}
+      let my_this=$(this)
+      $.ajax({
+           method:'GET',
+           url:"{% url 'likes' %}",
+           data:my_data,
+           success:(data)=>{
+           my_this.children('.mybadge').text(data.count)     
+           }        
+      })
+    })
+    //likes end comments starts here....
+  
+  })//main
+</script>

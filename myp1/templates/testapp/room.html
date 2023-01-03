@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        
+        <textarea cols="50" rows="10" id="chat-log"></textarea><br>
+        <input type="text" id="send_msg"><br >
+        <input type="button" value="send" id="send_button">
+        {{room_name | json_script:"room_name"}}
+        <script>
+            const roomName=JSON.parse(document.getElementById('room_name').textContent)
+            const chatSocket=new WebSocket(
+                'ws://'+window.location.host+'/ws/chat/'+roomName+'/'
+            )
+            chatSocket.onmessage=(e)=>{
+              obj=JSON.parse(e.data)
+              console.log('on message:',obj.status)
+              //document.getElementById('chat-log').value+= obj.message +'\n'
+            }
+            const button=document.getElementById('send_button')
+            button.onclick=(e)=>{ console.log('clicked')
+                const data=document.getElementById('send_msg').value
+                 chatSocket.send(JSON.stringify({
+                     'message':data
+                 }))
+                
+            }
+        </script>
+    </body>
+</html>

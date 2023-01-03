@@ -1,0 +1,37 @@
+{% extends 'testapp/base.html' %}
+{% load static %}
+{% block body_block %}
+ <div class="container">
+     {% for user in users %}
+       <div class="row mt-3">
+          <div class="col-sm-12 col-md-4">
+              
+              <h3 class="user_name">{{user.username}}</h3>
+              <img src={{user.profileimage.image.url}} class="user_profile img-fluid img-thumbnail"/>
+              <div class="row likes_comments_share" >
+                 <div class="col likes"  data-sid="{{user.id}}">Likes <span class="badge badge-secondary mybadge">{{user.likecheck_set.count}}</span></div>
+                 <div class="col comments"  data-sid="{{user.id}}"><a href="/comments/{{user.id}}">Comments</a></div>
+                 <div class="col chat"  data-sid="{{user.id}}"><a href="/chat/{{user.id}}">Chat</a></div>
+              </div>
+          </div>
+          <div class="mt-5 col-sm-12 col-md-4"> Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium odit consectetur quaerat veritatis vel perferendis! Beatae hic in illum! Unde sapiente quibusdam nisi aspernatur autem reiciendis expedita consequuntur soluta rem?</div>
+          <div class="mt-5 mydiv col-sm-12 col-md-4 user_profile"><p>2 Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias doloremque nihil natus facere sint ullam qui error suscipit, quas vitae a dolores tenetur hic. Impedit nobis itaque ipsa eum at.</p>
+            <p>3 Lorem ipsum dolor, sit amet consectetur adipisicing elit. Aliquid dicta inventore laudantium est possimus reiciendis recusandae eligendi aspernatur quo, officia hic libero adipisci rem error atque eaque non quidem similique?</p> 
+            <p>4 Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos voluptatibus beatae ex maiores fugit magnam odit dolores suscipit recusandae. Repudiandae ad nesciunt inventore mollitia atque tempora saepe voluptatem ipsum ullam!</p>
+     <p>5 Lorem ipsum, dolor sit amet consectetur adipisicing elit. Placeat odit voluptatem qui magnam illo dolor nemo sapiente repellat eos delectus aliquid in consequuntur, modi sint, perferendis quod ipsum ullam molestiae? 5 end</p>
+        </div>
+        </div> 
+        <hr style="height:2px;background-color: aqua;"/>  
+       {% endfor %}
+    
+</div><br><br>
+ 
+ </div> 
+ {% include 'testapp/likes.html' %}
+ 
+ {% endblock %}
+
+
+
+
+
